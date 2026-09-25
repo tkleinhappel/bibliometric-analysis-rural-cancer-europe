@@ -310,9 +310,9 @@ words_to_remove <- c("CANCER RESEARCH UK", "UK RESEARCH AND INNOVATION", "BRITIS
 # Loop through the words to remove and perform the substitution
 for (word in words_to_remove) {
   FullDataset$AB <- gsub(pattern = word,
-                          replacement = "",
-                          x = FullDataset$AB,
-                          fixed = TRUE)
+                         replacement = "",
+                         x = FullDataset$AB,
+                         fixed = TRUE)
 }
 
 save(FullDataset, file = here("Searches", "FullDataset.rda"))
@@ -326,23 +326,23 @@ write.xlsx(FullDataset, file = here("Searches", "FullDataset.xlsx"))
 
 ### Create a list of European countries
 European_Countries = c("ALBANIA", "ANDORRA", "AUSTRIA", "BELARUS", "BELGIUM", "BOSNIA AND HERZEGOVINA",
-	"BULGARIA", "CROATIA", "CYPRUS", "CZECHIA", "DENMARK", "ESTONIA", "FINLAND", "FRANCE", "GERMANY", 
-	"GREECE", "HUNGARY", "ICELAND", "IRELAND", "ITALY", "LATVIA", "LIECHTENSTEIN", "LITHUANIA",
-	"LUXEMBOURG", "MALTA", "MOLDOVA", "MONACO", "MONTENEGRO", "NETHERLANDS", "NORTH MACEDONIA",
-	"NORWAY", "POLAND", "PORTUGAL", "ROMANIA", "RUSSIA", "SAN MARINO", "SERBIA", "SLOVAKIA", "SLOVENIA",
-	"SPAIN", "SWEDEN", "SWITZERLAND", "UKRAINE", "UNITED KINGDOM")
+                       "BULGARIA", "CROATIA", "CYPRUS", "CZECHIA", "DENMARK", "ESTONIA", "FINLAND", "FRANCE", "GERMANY", 
+                       "GREECE", "HUNGARY", "ICELAND", "IRELAND", "ITALY", "LATVIA", "LIECHTENSTEIN", "LITHUANIA",
+                       "LUXEMBOURG", "MALTA", "MOLDOVA", "MONACO", "MONTENEGRO", "NETHERLANDS", "NORTH MACEDONIA",
+                       "NORWAY", "POLAND", "PORTUGAL", "ROMANIA", "RUSSIA", "SAN MARINO", "SERBIA", "SLOVAKIA", "SLOVENIA",
+                       "SPAIN", "SWEDEN", "SWITZERLAND", "UKRAINE", "UNITED KINGDOM")
 
 ### Create a list of European Population names
 European_Population = c("AUSTRIAN", "ALBANIAN", "ANDORRANS", "BELORUSSIAN", "BELGAE", "BOSNIAN",
-	"BULGARIAN", "CROATIAN", "CYPRIOT", "CZECH", "DANE", "ESTONIAN", "FINN", "FRENCH", "GERMAN", 
-	"GREEK", "HUNGARIAN", "ICELANDER", "IRISH", "ITALIAN", "LATVIAN", "LIECHTENSTEINER", "LITHUANIAN",
-	"LUXEMBOURGER", "MALTESE", "MOLDOVA", "MONEGASQUES", "MONTENEGRIN", "DUTCH", "NORTH MACEDONIAN",
-	"NORWEGIAN", "POLISH", "PORTUGUESE", "ROMANIAN", "RUSSIAN", "SAMMARINESE", "SERBIAN", "SLOVAK", "SLOVENE",
-	"SPANISH", "SWEDISH", "SWISS", "UKRAINIAN", "ENGLISH")
+                        "BULGARIAN", "CROATIAN", "CYPRIOT", "CZECH", "DANE", "ESTONIAN", "FINN", "FRENCH", "GERMAN", 
+                        "GREEK", "HUNGARIAN", "ICELANDER", "IRISH", "ITALIAN", "LATVIAN", "LIECHTENSTEINER", "LITHUANIAN",
+                        "LUXEMBOURGER", "MALTESE", "MOLDOVA", "MONEGASQUES", "MONTENEGRIN", "DUTCH", "NORTH MACEDONIAN",
+                        "NORWEGIAN", "POLISH", "PORTUGUESE", "ROMANIAN", "RUSSIAN", "SAMMARINESE", "SERBIAN", "SLOVAK", "SLOVENE",
+                        "SPANISH", "SWEDISH", "SWISS", "UKRAINIAN", "ENGLISH")
 
 # Create additional search words
 search_words = c("EUROPE", "BRITAIN", "BRITISH", "SCOTTISH", "WELSH", "DANISH", "FLEMISH", "POLE", 
-	"SLAV", "SWEDE", "CORNISH", "CATALAN", "BAVARIAN", "CROAT", "FINNISH")
+                 "SLAV", "SWEDE", "CORNISH", "CATALAN", "BAVARIAN", "CROAT", "FINNISH")
 
 # 1. Search for European country names (Title & Abstract)
 # 2. Search for European population names (Title & Abstract)
@@ -358,9 +358,9 @@ dim(FullDataset)
 
 Europe_DB_Abstract = FullDataset[FALSE,]
 for (i in 1:length(European_Countries)){
-	Country = FullDataset[grepl(European_Countries[i], FullDataset$AB), ]
-	print(dim(Country))
-	Europe_DB_Abstract= rbind(Country, Europe_DB_Abstract)
+  Country = FullDataset[grepl(European_Countries[i], FullDataset$AB), ]
+  print(dim(Country))
+  Europe_DB_Abstract= rbind(Country, Europe_DB_Abstract)
 }
 Europe_DB_Abstract$CR <- NA 
 Europe_DB_Abstract= mergeDbSources(Europe_DB_Abstract, remove.duplicated = TRUE)
@@ -375,9 +375,9 @@ write.xlsx(Europe_DB_Abstract, file = here("Searches", "Europe_DB_Abstract.xlsx"
 load(file=here("Searches", "FullDataset.rda"))
 Europe_DB_Title = FullDataset[FALSE,]
 for (i in 1:length(European_Countries)){
-	Country = FullDataset[grepl(European_Countries[i], FullDataset$TI), ]
-	print(dim(Country))
-	Europe_DB_Title= rbind(Country, Europe_DB_Title)
+  Country = FullDataset[grepl(European_Countries[i], FullDataset$TI), ]
+  print(dim(Country))
+  Europe_DB_Title= rbind(Country, Europe_DB_Title)
 }
 Europe_DB_Title$CR <- NA 
 Europe_DB_Title= mergeDbSources(Europe_DB_Title, remove.duplicated = TRUE)
@@ -390,9 +390,9 @@ save(Europe_DB_Title, file=here("Searches", "Europe_DB_Title.rda"))
 load(file=here("Searches", "FullDataset.rda"))
 Europe_DB_Keywords = FullDataset[FALSE,]
 for (i in 1:length(European_Countries)){
-	Country = FullDataset[grepl(European_Countries[i], FullDataset$DE), ]
-	print(dim(Country))
-	Europe_DB_Keywords= rbind(Country, Europe_DB_Keywords)
+  Country = FullDataset[grepl(European_Countries[i], FullDataset$DE), ]
+  print(dim(Country))
+  Europe_DB_Keywords= rbind(Country, Europe_DB_Keywords)
 }
 Europe_DB_Keywords$CR <- NA 
 Europe_DB_Keywords= mergeDbSources(Europe_DB_Keywords, remove.duplicated = TRUE)
@@ -407,9 +407,9 @@ write.xlsx(Europe_DB_Keywords, file = here("Searches", "Europe_DB_Keywords.xlsx"
 load(file=here("Searches", "FullDataset.rda"))
 Europe_DB_Title_Pop = FullDataset[FALSE,]
 for (i in 1:length(European_Population)){
-	Country = FullDataset[grepl(European_Population[i], FullDataset$TI), ]
-	print(dim(Country))
-	Europe_DB_Title_Pop= rbind(Country, Europe_DB_Title_Pop)
+  Country = FullDataset[grepl(European_Population[i], FullDataset$TI), ]
+  print(dim(Country))
+  Europe_DB_Title_Pop= rbind(Country, Europe_DB_Title_Pop)
 }
 Europe_DB_Title_Pop$CR <- NA 
 Europe_DB_Title_Pop = mergeDbSources(Europe_DB_Title_Pop, remove.duplicated=TRUE)
@@ -421,9 +421,9 @@ save(Europe_DB_Title_Pop, file=here("Searches", "Europe_DB_Title_Pop.rda"))
 #Abstract
 Europe_DB_Abstract_Pop = FullDataset[FALSE,]
 for (i in 1:length(European_Population)){
-	Country = FullDataset[grepl(European_Population[i], FullDataset$AB), ]
-	print(dim(Country))
-	Europe_DB_Abstract_Pop = rbind(Country, Europe_DB_Abstract_Pop)
+  Country = FullDataset[grepl(European_Population[i], FullDataset$AB), ]
+  print(dim(Country))
+  Europe_DB_Abstract_Pop = rbind(Country, Europe_DB_Abstract_Pop)
 }
 Europe_DB_Abstract_Pop$CR <- NA 
 Europe_DB_Abstract_Pop = mergeDbSources(Europe_DB_Abstract_Pop, remove.duplicated = TRUE)
@@ -435,9 +435,9 @@ save(Europe_DB_Abstract_Pop, file=here("Searches", "Europe_DB_Abstract_Pop.rda")
 # Keywords
 Europe_DB_Keywords_Pop = FullDataset[FALSE,]
 for (i in 1:length(European_Population)){
-	Country = FullDataset[grepl(European_Population[i], FullDataset$DE), ]
-	print(dim(Country))
-	Europe_DB_Keywords_Pop = rbind(Country, Europe_DB_Keywords_Pop)
+  Country = FullDataset[grepl(European_Population[i], FullDataset$DE), ]
+  print(dim(Country))
+  Europe_DB_Keywords_Pop = rbind(Country, Europe_DB_Keywords_Pop)
 }
 Europe_DB_Keywords_Pop$CR <- NA 
 Europe_DB_Keywords_Pop = mergeDbSources(Europe_DB_Keywords_Pop, remove.duplicated = TRUE)
@@ -452,9 +452,9 @@ save(Europe_DB_Keywords_Pop, file=here("Searches", "Europe_DB_Keywords_Pop.rda")
 load(file=here("Searches", "FullDataset.rda"))
 Europe_DB_Title_Extra = FullDataset[FALSE,]
 for (i in 1:length(search_words)){
-	Country = FullDataset[grepl(search_words[i], FullDataset$TI), ]
-	print(dim(Country))
-	Europe_DB_Title_Extra= rbind(Country, Europe_DB_Title_Extra)
+  Country = FullDataset[grepl(search_words[i], FullDataset$TI), ]
+  print(dim(Country))
+  Europe_DB_Title_Extra= rbind(Country, Europe_DB_Title_Extra)
 }
 Europe_DB_Title_Extra$CR <- NA
 Europe_DB_Title_Extra = mergeDbSources(Europe_DB_Title_Extra, remove.duplicated = TRUE)
@@ -466,9 +466,9 @@ save(Europe_DB_Title_Extra, file=here("Searches", "Europe_DB_Title_Extra.rda"))
 #Abstract
 Europe_DB_Abstract_Extra = FullDataset[FALSE,]
 for (i in 1:length(search_words)){
-	Country = FullDataset[grepl(search_words[i], FullDataset$AB), ]
-	print(dim(Country))
-	Europe_DB_Abstract_Extra= rbind(Country, Europe_DB_Abstract_Extra)
+  Country = FullDataset[grepl(search_words[i], FullDataset$AB), ]
+  print(dim(Country))
+  Europe_DB_Abstract_Extra= rbind(Country, Europe_DB_Abstract_Extra)
 }
 Europe_DB_Abstract_Extra$CR <- NA
 Europe_DB_Abstract_Extra = mergeDbSources(Europe_DB_Abstract_Extra, remove.duplicated = TRUE)
@@ -480,9 +480,9 @@ write.xlsx(Europe_DB_Abstract_Extra, file = here("Searches", "Europe_DB_Abstract
 #Keywords
 Europe_DB_Keywords_Extra = FullDataset[FALSE,]
 for (i in 1:length(search_words)){
-	Country = FullDataset[grepl(search_words[i], FullDataset$DE), ]
-	print(dim(Country))
-	Europe_DB_Keywords_Extra= rbind(Country, Europe_DB_Keywords_Extra)
+  Country = FullDataset[grepl(search_words[i], FullDataset$DE), ]
+  print(dim(Country))
+  Europe_DB_Keywords_Extra= rbind(Country, Europe_DB_Keywords_Extra)
 }
 Europe_DB_Keywords_Extra$CR <- NA
 Europe_DB_Keywords_Extra = mergeDbSources(Europe_DB_Keywords_Extra, remove.duplicated = TRUE)
@@ -611,8 +611,8 @@ dim(EU_Keywords)
 
 Europe_Dataset = Europe_DB_Abstract[FALSE, ]
 Europe_Dataset = rbind(Europe_DB_Abstract, Europe_DB_Title, Europe_DB_Keywords, Europe_DB_Title_Extra, 
-	Europe_DB_Abstract_Extra, Europe_DB_Keywords_Extra, Europe_DB_Title_Pop, Europe_DB_Abstract_Pop, Europe_DB_Keywords_Pop,
-	UK_Title, UK_Abstract, UK_Keywords, EU_Title, EU_Abstract, EU_Keywords)
+                       Europe_DB_Abstract_Extra, Europe_DB_Keywords_Extra, Europe_DB_Title_Pop, Europe_DB_Abstract_Pop, Europe_DB_Keywords_Pop,
+                       UK_Title, UK_Abstract, UK_Keywords, EU_Title, EU_Abstract, EU_Keywords)
 dim(Europe_Dataset)
 
 Europe_Dataset = mergeDbSources(Europe_Dataset, remove.duplicated = TRUE)
@@ -632,9 +632,9 @@ dim(Europe_Dataset)
 
 Europe_DB_Final = Europe_Dataset[FALSE,]
 for (i in 1:length(European_Countries)){
-	Country = Europe_Dataset[grepl(European_Countries[i], Europe_Dataset$AU_CO), ]
-	print(dim(Country))
-	Europe_DB_Final= rbind(Country, Europe_DB_Final)
+  Country = Europe_Dataset[grepl(European_Countries[i], Europe_Dataset$AU_CO), ]
+  print(dim(Country))
+  Europe_DB_Final= rbind(Country, Europe_DB_Final)
 }
 dim(Europe_DB_Final)
 Europe_Dataset = mergeDbSources(Europe_DB_Final, remove.duplicated = TRUE)
@@ -655,13 +655,10 @@ write.xlsx(Europe_Dataset, file = here("Searches", "Europe_Dataset.xlsx"))
 Europe_Dataset <- Europe_Dataset %>%
   dplyr::mutate(LA = dplyr::if_else(LA == "ROMANIAN;MOLDAVIAN;MOLDOVAN", "ROMANIAN", LA))
 
+# NOTE: the Language field was blank for these records. Manually checked
+# each one and confirmed they were Bulgarian, so relabelled here.
 Europe_Dataset <- Europe_Dataset %>%
   dplyr::mutate(LA = dplyr::if_else(LA == "", "BULGARIAN", LA))
 
 save(Europe_Dataset, file = here("Searches", "Europe_Dataset.rda"))
 write.xlsx(Europe_Dataset, file = here("Searches", "Europe_Dataset.xlsx"))
-
-
-
-
-

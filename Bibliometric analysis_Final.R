@@ -491,7 +491,7 @@ MostProdCountries <- data.frame(
   SCP = as.numeric(MostProdCountries$SCP), 
   MCP = as.numeric(MostProdCountries$MCP), 
   MCP_Ratio = as.numeric(MostProdCountries$MCP_Ratio)
-  ) %>%
+) %>%
   mutate(
     Country = str_trim(Country),
     # Convert to Title Case *after* trimming
@@ -1342,7 +1342,7 @@ InstitutionNetworkPlot <- networkPlot(
   alpha = 0.9,               # Transparency of network elements
   verbose = FALSE,            # Suppress verbose output from networkPlot
   remove.isolates = TRUE
-  )
+)
 
 # 5. Extract the igraph object for further custom visualization
 networkGraph <- InstitutionNetworkPlot$graph
@@ -1498,7 +1498,7 @@ my_palette <- brewer.pal(name = "Dark2", n = 8)[1:8]
 SourcesProdTimePlot <- ggplot(
   data = SourcesProductionTime_PlotReady, 
   aes(x = YearAsDate, y = Articles, group = Source, color = Source)
-  ) +
+) +
   # Add the line geometry.
   geom_line() +
   # Add descriptive labels for the axes.
@@ -1747,7 +1747,7 @@ if ("map" %in% names(Map)) {
 
 # Save Thematic Map plot (PNG and SVG for Illustrator)
 if (!is.null(ThematicMapPlot_final)) {
-  ggsave(here("PlotsEurope", "ThematicMapPlot_no_logo.png"),,
+  ggsave(here("PlotsEurope", "ThematicMapPlot_no_logo.png"),
          plot = ThematicMapPlot_final,
          width = 8.5,
          height = 8.5,
@@ -1791,7 +1791,7 @@ if (file.exists(mca_plot_filename) && file.exists(thematic_plot_png_filename)) {
 # save as pdf
 
 # Only proceed if the plot objects exist in your R environment
-if (exists("MCAplot") && !is.null(ThematicMapPlot_final)) {
+if (!is.null(MCAplot_final) && !is.null(ThematicMapPlot_final)) {
   
   # Combine them side-by-side using patchwork syntax
   combined_vector_plot <- MCAplot_final + ThematicMapPlot_final
@@ -1810,13 +1810,6 @@ if (exists("MCAplot") && !is.null(ThematicMapPlot_final)) {
 
 
 
-
-
-
-library(magick)
-library(grid)
-library(patchwork)
-library(here)
 
 
 
@@ -1852,7 +1845,7 @@ Figure_Option_A <-
       AC
       BC
     ",
-    widths = c(2, 2)   # ✅ network is exactly 1/3 width
+    widths = c(2, 2)   # network is exactly 1/3 width
   ) +
   plot_annotation(
     tag_levels = "a",
@@ -1913,11 +1906,10 @@ ggsave(
 )
 
 # ---- OPTION B ----
- ggsave(
-   here("PlotsEurope", "Manuscript_Figure_OptionB_Corrected.pdf"),
-   plot = Figure_Option_B,
-   width = 16,
-   height = 18,
-   device = "pdf"
- )
-
+ggsave(
+  here("PlotsEurope", "Manuscript_Figure_OptionB_Corrected.pdf"),
+  plot = Figure_Option_B,
+  width = 16,
+  height = 18,
+  device = "pdf"
+)
