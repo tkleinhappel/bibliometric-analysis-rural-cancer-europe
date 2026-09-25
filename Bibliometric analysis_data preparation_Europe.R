@@ -123,7 +123,7 @@ WoSdataset_final <- WoSdataset_articles %>%
       TRUE ~ "" # If no "CORRESPONDING AUTHOR", make it empty
     )
   ) %>%
-  # 3. Corrected AU_UN cleaning: replicate original's split-remove-join logic
+  # 3. Clean AU_UN: split by ";", remove any element containing "CORRESPONDING AUTHOR", then rejoin
   mutate(
     AU_UN = map_chr(AU_UN, ~ {
       # Split the string by ";", find the element containing "CORRESPONDING AUTHOR",
@@ -132,11 +132,17 @@ WoSdataset_final <- WoSdataset_articles %>%
       cleaned_affiliations <- affiliations[!grepl("CORRESPONDING AUTHOR", affiliations, fixed = TRUE)]
       str_c(cleaned_affiliations, collapse = ";")
     }),
-    # 4. Correct AU1_UN cleaning: The original logic was to clear the entire cell, not just the text.
+    # 4. Clean AU1_UN: clear the entire cell if it contains "CORRESPONDING AUTHOR"
     AU1_UN = if_else(str_detect(AU1_UN, "CORRESPONDING AUTHOR"), "", AU1_UN)
   ) %>%
   # 5. Drop CR column
   select(-CR) %>%
+  # NOTE: The row number below corresponds to a specific record identified
+  # manually in this dataset's Web of Science search (26 August 2025). If you
+  # rerun the search, the results may return a different number of records, or
+  # in a different order, so this row number will no longer point to the same
+  # entry. Check the affected record again after rerunning the search, rather
+  # than assuming this line still applies correctly.
   # Fix specific error for AU1_CO - using row-wise operation if truly a single fix
   mutate(
     AU1_CO = case_when(
@@ -161,15 +167,7 @@ scopus_article_types <- c("ARTICLE", "REVIEW")
 ScopusDataset_raw <- process_database_conversion("Scopus/ScopusFullSearch.bib", dbsource = "scopus")
 
 
-# Replicate the original's specific logic for meta-tag extraction.
-# The original script first removes these columns before re-extracting them.
-
-# NOTE: The row number below corresponds to a specific record identified
-# manually in this dataset's Web of Science search (26 August 2025). If you
-# rerun the search, the results may return a different number of records, or
-# in a different order, so this row number will no longer point to the same
-# entry. Check the affected record again after rerunning the search, rather
-# than assuming this line still applies correctly.
+# Drop existing AU1_UN/AU_UN columns before re-extracting them, to avoid duplicate columns.
 
 ScopusDataset_raw <- ScopusDataset_raw %>%
   select(-any_of(c("AU1_UN", "AU_UN"))) %>%
@@ -192,7 +190,6 @@ save(ScopusDataset_articles, file = here("Searches", "Scopus", "ScopusDataset_ar
 
 
 ###### CLEAN SCOPUS DATASET
-# Apply cleaning steps sequentially as per original logic
 ScopusDataset_final <- ScopusDataset_articles %>%
   # 1. Remove empty author records
   filter(AU != "") %>%
@@ -200,16 +197,14 @@ ScopusDataset_final <- ScopusDataset_articles %>%
   mutate(CR = if_else(nchar(CR) > 30000, " ", CR)) %>%
   # 3. Change [No ABSTRACT] to blank.
   mutate(AB = str_replace_all(AB, fixed("[NO ABSTRACT AVAILABLE]"), " ")) %>%
-  # 4. Clean RP column. Original clears the ENTIRE cell if it starts with a semicolon.
+  # 4. Clear RP entirely if it starts with a semicolon.
   mutate(RP = if_else(str_detect(RP, "^;"), "", RP)) %>%
-  # 5. Clean AU_UN and AU1_UN columns: The original uses `sub` which only replaces
-  # the FIRST occurrence of "NOTREPORTED".
+  # 5. Remove the first occurrence of "NOTREPORTED" from AU_UN and AU1_UN.
   mutate(
     AU_UN = str_replace(AU_UN, "NOTREPORTED", ""),
     AU1_UN = str_replace(AU1_UN, "NOTREPORTED", "")
   ) %>%
-  # 6. Replicate the redundant AU_UN cleaning step from the original script
-  # The original script performs this step twice, so we will as well.
+  # 6. Run the AU_UN cleaning step a second time to catch any remaining "NOTREPORTED" entries.
   mutate(AU_UN = str_replace(AU_UN, "NOTREPORTED", "")) %>%
   # Remove the temporary 'max' column if it was created
   select(-any_of("max"))
@@ -240,7 +235,6 @@ write.xlsx(Merged_WoS_Scopus_Db, file = here("Searches", "Merged_WoS_Scopus_Db.x
 #load(file = here("Searches", "Merged_WoS_Scopus_Db.Rda"))
 
 ## Select relevant columns for the final dataset
-# The original code's select is a bit verbose, the new select works perfectly fine.
 FullDataset <- Merged_WoS_Scopus_Db %>%
   select(
     AU, DE, ID, C1, AB, DI, SO, LA, TC, TI, DT, PY, SR, SR_FULL, CR, DB, RP,

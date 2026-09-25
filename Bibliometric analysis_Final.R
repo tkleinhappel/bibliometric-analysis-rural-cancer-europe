@@ -598,9 +598,7 @@ CountriesOverTime_Final <- CountriesOverTime_Initial %>%
 min_year_data <- min(CountriesOverTime_Final$Years, na.rm = TRUE)
 max_year_data <- max(CountriesOverTime_Final$Years, na.rm = TRUE)
 
-# The original code specified 1940:2025 for `full_seq`.
-# Using the specified range, or dynamically from data if preferred.
-# For consistency with your original, I'll use 1940:2025.
+# Years span 1940-2025 to ensure consistent plotting across all countries.
 CountriesOverTime_Final <- CountriesOverTime_Final %>%
   group_by(Countries) %>%
   # Use `complete` to fill in missing years for each country, setting total_count to 0
@@ -1353,7 +1351,7 @@ networkGraph <- InstitutionNetworkPlot$graph
 # but this line ensures V(networkGraph)$label is also set consistently.
 V(networkGraph)$label <- V(networkGraph)$name
 
-# 7. Customize node and edge colors based on community detection
+# 7. Customize node and edge colours based on community detection
 # Get the communities detected by networkPlot
 communities <- V(networkGraph)$community
 
